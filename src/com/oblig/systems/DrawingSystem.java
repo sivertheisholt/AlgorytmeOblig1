@@ -4,9 +4,7 @@ import com.oblig.components.Grein;
 import com.oblig.guis.Control;
 import javafx.scene.canvas.GraphicsContext;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class DrawingSystem {
 
@@ -48,23 +46,33 @@ public class DrawingSystem {
         ArrayList<Grein> greinList = new ArrayList<>();
 
         for(Grein grein : map.get(recursion)) {
-            double length = grein.getLengde() * lengthModifier;
-            double x2Left = grein.getX2() + Math.cos(grein.getAngle() + angleModifier) * length;
-            double y2Left = grein.getY2() - Math.sin(grein.getAngle() + angleModifier) * length;
-            double x2Right = grein.getX2() + Math.cos(grein.getAngle() - angleModifier) * length;
-            double y2Right = grein.getY2() - Math.sin(grein.getAngle() - angleModifier) * length;
+            double length = grein.getLengde()
+                    * (controlGui.getLengdeAvvikSlider().getValue() == 0.3 ? lengthModifier : calculateLengthModifier( 1 - controlGui.getLengdeAvvikSlider().getValue()));
 
-            System.out.println(y2Left);
+            double angleLeft = grein.getAngle()
+                    + (Math.PI / controlGui.getVinkelSlider().getValue()
+                    * (controlGui.getVinkelAvvikSlider().getValue() > 0 ? calculateAngleModifier(controlGui.getGreinAvvikSlider().getValue()) : 1));
+
+            double angleRight = grein.getAngle()
+                    - (Math.PI / controlGui.getVinkelSlider().getValue()
+                    * (controlGui.getVinkelAvvikSlider().getValue() > 0 ? calculateAngleModifier(controlGui.getGreinAvvikSlider().getValue()) : 1));
+
+            double x2Left = grein.getX2() + Math.cos(angleLeft) * length;
+            double y2Left = grein.getY2() - Math.sin(angleLeft) * length;
+            double x2Right = grein.getX2() + Math.cos(angleRight) * length;
+            double y2Right = grein.getY2() - Math.sin(angleRight) * length;
 
             //venstre grein
-            gc.strokeLine(grein.getX2(), grein.getY2(), x2Left, y2Left);
-
-            greinList.add(new Grein(grein.getX2(), grein.getY2(), x2Left, y2Left, length, grein.getAngle() + angleModifier));
+            if(!calculateVisibilityModifier(controlGui.getGreinAvvikSlider().getValue())) {
+                gc.strokeLine(grein.getX2(), grein.getY2(), x2Left, y2Left);
+                greinList.add(new Grein(grein.getX2(), grein.getY2(), x2Left, y2Left, length, grein.getAngle() + angleModifier));
+            }
 
             //Høyre grein
-            gc.strokeLine(grein.getX2(), grein.getY2(), x2Right, y2Right);
-
-            greinList.add(new Grein(grein.getX2(), grein.getY2(), x2Right, y2Right, length, grein.getAngle() - angleModifier));
+            if(!calculateVisibilityModifier(controlGui.getGreinAvvikSlider().getValue())) {
+                gc.strokeLine(grein.getX2(), grein.getY2(), x2Right, y2Right);
+                greinList.add(new Grein(grein.getX2(), grein.getY2(), x2Right, y2Right, length, grein.getAngle() - angleModifier));
+            }
         }
 
         recursion++;
@@ -81,18 +89,38 @@ public class DrawingSystem {
     private double calculateLengthModifier(double chance) {
         if(chance == 1) return lengthModifier;
         double rangeMin = chance;
-        double rangeMax = 1;
+        double rangeMax = chance * 2;
         Random random = new Random();
         return rangeMin + (rangeMax - rangeMin) * random.nextDouble();
     }
     public void clearCanvas() {
         gc.clearRect(0,0,gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
     }
-    /*
-    private double calculateVisibilityModifier(double chance) {
 
+    private boolean calculateVisibilityModifier(double chance) {
+        Integer[] random = {1, 1,
+                        2, 2, 2, 2,
+                        3, 3, 3, 3, 3, 3,
+                        4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
+
+        List<Integer> list = Arrays.asList(random);
+        Collections.shuffle(list);
+
+        switch((int) chance) {
+            case 1:
+                return list.get(0) == 1 ? true : false;
+            case 2:
+                return list.get(0) == 2 ? true : false;
+            case 3:
+                return list.get(0) == 3 ? true : false;
+            case 4:
+                return list.get(0) == 4 ? true : false;
+            case 5:
+                return list.get(0) == 5 ? true : false;
+        }
+        return false;
     }
-    */
 
     public void setRecursion(int recursion) {
         this.recursion = recursion;

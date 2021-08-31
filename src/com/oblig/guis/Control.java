@@ -30,19 +30,17 @@ public class Control {
     private Slider greinAvvikSlider;
     private Label greinAvvikLabel;
 
-
     private Button drawButton;
-
 
     public Control() {
         vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
 
-        vinkelSlider = new Slider(0, 1, 0);
+        vinkelSlider = new Slider(0, 50, 5);
         vinkelSlider.setShowTickMarks(true);
         vinkelSlider.setShowTickLabels(true);
-        vinkelSlider.setMajorTickUnit(0.25f);
-        vinkelSlider.setBlockIncrement(0.1f);
+        vinkelSlider.setMajorTickUnit(10f);
+        vinkelSlider.setBlockIncrement(5f);
         vinkelLabel = new Label("Grein vinkel");
 
         stammeLengdeSlider = new Slider(0, 200, 100);
@@ -66,20 +64,19 @@ public class Control {
         vinkelAvvikSlider.setBlockIncrement(0.1f);
         vinkelAvvikLabel = new Label("Vinkel avviksnivå");
 
-        lengdeAvvikSlider = new Slider(0, 1, 0);
+        lengdeAvvikSlider = new Slider(0, 1, 0.3);
         lengdeAvvikSlider.setShowTickMarks(true);
         lengdeAvvikSlider.setShowTickLabels(true);
         lengdeAvvikSlider.setMajorTickUnit(0.25f);
         lengdeAvvikSlider.setBlockIncrement(0.1f);
         lengdeAvvikLabel = new Label("Lengde avviksnivå");
 
-        greinAvvikSlider = new Slider(0, 1, 0);
+        greinAvvikSlider = new Slider(0, 5, 0);
         greinAvvikSlider.setShowTickMarks(true);
         greinAvvikSlider.setShowTickLabels(true);
-        greinAvvikSlider.setMajorTickUnit(0.25f);
-        greinAvvikSlider.setBlockIncrement(0.1f);
+        greinAvvikSlider.setMajorTickUnit(1f);
+        greinAvvikSlider.setBlockIncrement(0.5f);
         greinAvvikLabel = new Label("Grein avviksnivå");
-
 
         drawButton = new Button("Draw");
         drawButton.setPrefWidth(Double.MAX_VALUE);
