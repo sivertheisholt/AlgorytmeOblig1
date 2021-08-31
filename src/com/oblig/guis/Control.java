@@ -12,8 +12,14 @@ import javafx.scene.layout.VBox;
 public class Control {
     private VBox vBox;
 
-    private Slider randomSlider;
-    private Label randomLabel;
+    private Slider vinkelSlider;
+    private Label vinkelLabel;
+
+    private Slider stammeLengdeSlider;
+    private Label stammeLengdeLabel;
+
+    private Slider antallRekursjonSlider;
+    private Label antallRekursjonLabel;
 
     private Slider vinkelAvvikSlider;
     private Label vinkelAvvikLabel;
@@ -24,8 +30,6 @@ public class Control {
     private Slider greinAvvikSlider;
     private Label greinAvvikLabel;
 
-    private Slider startLengdeSlider;
-    private Label startLengdeLabel;
 
     private Button drawButton;
 
@@ -34,12 +38,26 @@ public class Control {
         vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
 
-        randomSlider = new Slider(0, 1, 0);
-        randomSlider.setShowTickMarks(true);
-        randomSlider.setShowTickLabels(true);
-        randomSlider.setMajorTickUnit(0.25f);
-        randomSlider.setBlockIncrement(0.1f);
-        randomLabel = new Label("Tilfeldighetsnivå");
+        vinkelSlider = new Slider(0, 1, 0);
+        vinkelSlider.setShowTickMarks(true);
+        vinkelSlider.setShowTickLabels(true);
+        vinkelSlider.setMajorTickUnit(0.25f);
+        vinkelSlider.setBlockIncrement(0.1f);
+        vinkelLabel = new Label("Grein vinkel");
+
+        stammeLengdeSlider = new Slider(0, 200, 100);
+        stammeLengdeSlider.setShowTickMarks(true);
+        stammeLengdeSlider.setShowTickLabels(true);
+        stammeLengdeSlider.setMajorTickUnit(40f);
+        stammeLengdeSlider.setBlockIncrement(20f);
+        stammeLengdeLabel = new Label("Stamme lengde");
+
+        antallRekursjonSlider = new Slider(0, 10, 5);
+        antallRekursjonSlider.setShowTickMarks(true);
+        antallRekursjonSlider.setShowTickLabels(true);
+        antallRekursjonSlider.setMajorTickUnit(2f);
+        antallRekursjonSlider.setBlockIncrement(1f);
+        antallRekursjonLabel = new Label("Antall rekursjons nivåer");
 
         vinkelAvvikSlider = new Slider(0, 1, 0);
         vinkelAvvikSlider.setShowTickMarks(true);
@@ -62,21 +80,16 @@ public class Control {
         greinAvvikSlider.setBlockIncrement(0.1f);
         greinAvvikLabel = new Label("Grein avviksnivå");
 
-        startLengdeSlider = new Slider(0, 200, 0);
-        startLengdeSlider.setShowTickMarks(true);
-        startLengdeSlider.setShowTickLabels(true);
-        startLengdeSlider.setMajorTickUnit(50f);
-        startLengdeSlider.setBlockIncrement(25f);
-        startLengdeLabel = new Label("Grein start lengde");
 
         drawButton = new Button("Draw");
         drawButton.setPrefWidth(Double.MAX_VALUE);
 
-        vBox.getChildren().addAll(randomLabel, randomSlider,
+        vBox.getChildren().addAll(vinkelLabel, vinkelSlider,
+                stammeLengdeLabel, stammeLengdeSlider,
+                antallRekursjonLabel, antallRekursjonSlider,
                 vinkelAvvikLabel, vinkelAvvikSlider,
                 lengdeAvvikLabel, lengdeAvvikSlider,
                 greinAvvikLabel, greinAvvikSlider,
-                startLengdeLabel, startLengdeSlider,
                 drawButton);
     }
 
@@ -89,13 +102,22 @@ public class Control {
             @Override
             public void handle(ActionEvent actionEvent) {
                 drawingSystem.clearCanvas();
-                drawingSystem.tegnTre(x, y, startLengdeSlider.getValue());
+                drawingSystem.setRecursion(0);
+                drawingSystem.tegnTre(x, y, stammeLengdeSlider.getValue());
             }
         });
     }
 
-    public Slider getRandomSlider() {
-        return randomSlider;
+    public Slider getVinkelSlider() {
+        return vinkelSlider;
+    }
+
+    public Slider getStammeLengdeSlider() {
+        return stammeLengdeSlider;
+    }
+
+    public Slider getAntallRekursjonSlider() {
+        return antallRekursjonSlider;
     }
 
     public Slider getVinkelAvvikSlider() {
@@ -110,7 +132,4 @@ public class Control {
         return greinAvvikSlider;
     }
 
-    public Slider getStartLengdeSlider() {
-        return startLengdeSlider;
-    }
 }

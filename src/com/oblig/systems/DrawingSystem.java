@@ -1,10 +1,12 @@
 package com.oblig.systems;
 
+import com.oblig.components.Grein;
 import com.oblig.guis.Control;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
-
 
 public class DrawingSystem {
 
@@ -14,35 +16,59 @@ public class DrawingSystem {
     private double angleModifier = Math.PI / 5;
     private double lengthModifier = 0.70;
 
+    private int recursion;
+
+    private HashMap<Integer, Grein[]> map;
+
     public DrawingSystem(GraphicsContext gc, Control controlGui) {
         this.gc = gc;
         this.controlGui = controlGui;
+        recursion = 0;
+        map = new HashMap<>();
     }
+
 
     public void tegnTre(double x, double y, double lengde){
-        gc.strokeLine(x, y, x, y - lengde);
-        tegnGrein(x, y - lengde, lengde, Math.PI / 2);
+        tegnStamme(x, y, lengde);
     }
 
-    private void tegnGrein(double x, double y, double lengde, double angle) {
-        //Skaffer riktig koordinater basert på vinkel
-        double x2 = x + Math.cos(angle) * lengde;
-        double y2 = y - Math.sin(angle) * lengde;
+    private void tegnStamme(double x, double y, double lengde) {
+        gc.strokeLine(x, y, x, y - lengde);
+        map.put(recursion, new Grein[] {new Grein(x, y, x, y - lengde, lengde, Math.PI / 2)});
+        tegnNivåer();
+    }
 
-        //Dersom lengden er mindre enn 2 piksler så avslutt
-        if (lengde < 2) return;
+    private void tegnNivåer() {
+        tegnGreiner();
+        if(recursion >= (int) controlGui.getAntallRekursjonSlider().getValue()) return;
+        tegnNivåer();
+    }
 
-        //Tegner første grein til venstre
-        gc.strokeLine(x, y, x2, y2);
-        tegnGrein(x2, y2,
-                lengde * calculateLengthModifier(1 - controlGui.getLengdeAvvikSlider().getValue()),
-                angle + calculateAngleModifier(1 - controlGui.getVinkelAvvikSlider().getValue()));
+    private void tegnGreiner() {
+        ArrayList<Grein> greinList = new ArrayList<>();
 
-        //Tegner andre grein til høyre
-        gc.strokeLine(x, y, x2, y2);
-        tegnGrein(x2, y2,
-                lengde * calculateLengthModifier(1 - controlGui.getLengdeAvvikSlider().getValue()),
-                angle - calculateAngleModifier(1 - controlGui.getGreinAvvikSlider().getValue()));
+        for(Grein grein : map.get(recursion)) {
+            double length = grein.getLengde() * lengthModifier;
+            double x2Left = grein.getX2() + Math.cos(grein.getAngle() + angleModifier) * length;
+            double y2Left = grein.getY2() - Math.sin(grein.getAngle() + angleModifier) * length;
+            double x2Right = grein.getX2() + Math.cos(grein.getAngle() - angleModifier) * length;
+            double y2Right = grein.getY2() - Math.sin(grein.getAngle() - angleModifier) * length;
+
+            System.out.println(y2Left);
+
+            //venstre grein
+            gc.strokeLine(grein.getX2(), grein.getY2(), x2Left, y2Left);
+
+            greinList.add(new Grein(grein.getX2(), grein.getY2(), x2Left, y2Left, length, grein.getAngle() + angleModifier));
+
+            //Høyre grein
+            gc.strokeLine(grein.getX2(), grein.getY2(), x2Right, y2Right);
+
+            greinList.add(new Grein(grein.getX2(), grein.getY2(), x2Right, y2Right, length, grein.getAngle() - angleModifier));
+        }
+
+        recursion++;
+        map.put(recursion, greinList.toArray(Grein[]::new));
     }
 
     private double calculateAngleModifier(double chance) {
@@ -67,4 +93,8 @@ public class DrawingSystem {
 
     }
     */
+
+    public void setRecursion(int recursion) {
+        this.recursion = recursion;
+    }
 }

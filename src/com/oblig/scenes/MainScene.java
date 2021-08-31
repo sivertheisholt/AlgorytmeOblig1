@@ -46,7 +46,7 @@ public class MainScene {
         drawingSystem = new DrawingSystem(drawing.getCanvasGc(), control);
 
         //Initialiserer knapp
-        control.initializeDrawButton(drawingSystem, drawing.getCanvas().getWidth() / 2, drawing.getCanvas().getHeight(), control.getStartLengdeSlider().getValue());
+        control.initializeDrawButton(drawingSystem, drawing.getCanvas().getWidth() / 2, drawing.getCanvas().getHeight(), control.getStammeLengdeSlider().getValue());
     }
 
 }
