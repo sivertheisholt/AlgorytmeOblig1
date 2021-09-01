@@ -9,6 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 
+/**
+ * Control Klassen inneholder gui delen for kontrollene
+ */
 public class Control {
     private VBox vBox;
 
@@ -32,6 +35,9 @@ public class Control {
 
     private Button drawButton;
 
+    /**
+     * Konstruker for control klassen
+     */
     public Control() {
         vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
@@ -90,11 +96,13 @@ public class Control {
                 drawButton);
     }
 
-    public VBox getvBox() {
-        return vBox;
-    }
-
-    public void initializeDrawButton(DrawingSystem drawingSystem, double x, double y, double length) {
+    /**
+     * Initialiserer tegn knappen og setter hva som skal skje
+     * @param drawingSystem Tegne systemet som brukes
+     * @param x startplasseringen
+     * @param y startplasseringen
+     */
+    public void initializeDrawButton(DrawingSystem drawingSystem, double x, double y) {
         drawButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -103,6 +111,12 @@ public class Control {
                 drawingSystem.tegnTre(x, y, stammeLengdeSlider.getValue());
             }
         });
+    }
+
+    /** Getters og setters **/
+
+    public VBox getvBox() {
+        return vBox;
     }
 
     public Slider getVinkelSlider() {

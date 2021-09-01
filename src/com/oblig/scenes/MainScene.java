@@ -8,11 +8,19 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+/**
+ * Hoved scenen for programmet
+ * Her blir alt "satt" sammen
+ */
 public class MainScene {
     private Drawing drawing;
     private Control control;
     private DrawingSystem drawingSystem;
 
+    /**
+     * Konstruker for en scene
+     * @param stage hvilken stage scenen tilhører
+     */
     public MainScene(Stage stage) {
         //Konstruerer en ny gridpane
         GridPane gridpane = new GridPane();
@@ -31,7 +39,7 @@ public class MainScene {
         gridpane.setGridLinesVisible(true);
 
         //Drawing gui
-        drawing = new Drawing(drawingColumn);
+        drawing = new Drawing();
         gridpane.add(drawing.getCanvas(),0,0);
         //drawing.drawLineTest();
 
@@ -46,7 +54,7 @@ public class MainScene {
         drawingSystem = new DrawingSystem(drawing.getCanvasGc(), control);
 
         //Initialiserer knapp
-        control.initializeDrawButton(drawingSystem, drawing.getCanvas().getWidth() / 2, drawing.getCanvas().getHeight(), control.getStammeLengdeSlider().getValue());
+        control.initializeDrawButton(drawingSystem, drawing.getCanvas().getWidth() / 2, drawing.getCanvas().getHeight());
     }
 
 }

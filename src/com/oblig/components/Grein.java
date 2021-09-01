@@ -1,7 +1,8 @@
 package com.oblig.components;
 
-import javafx.scene.shape.Line;
-
+/**
+ * Grein inneholder informasjon om en linje som blir tegnet
+ */
 public class Grein {
     private double x;
     private double y;
@@ -10,6 +11,15 @@ public class Grein {
     private double lengde;
     private double angle;
 
+    /**
+     * Konstrukter for en grein
+     * @param x start x
+     * @param y start y
+     * @param x2 slutt x
+     * @param y2 slutt y
+     * @param lengde lengde som linjen fikk (Kunne også bare blitt kalkulert her istedenfor)
+     * @param angle vinkel på linjen
+     */
     public Grein(double x, double y, double x2, double y2, double lengde, double angle) {
         this.x = x;
         this.y = y;
@@ -19,6 +29,8 @@ public class Grein {
         this.angle = angle;
     }
 
+    /** Getters og setters **/
+
     public double getAngle() {
         return angle;
     }
@@ -27,35 +39,12 @@ public class Grein {
         return lengde;
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
     public double getX2() {
         return x2;
-    }
-
-    public void setX2(double x2) {
-        this.x2 = x2;
     }
 
     public double getY2() {
         return y2;
     }
 
-    public void setY2(double y2) {
-        this.y2 = y2;
-    }
 }

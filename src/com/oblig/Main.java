@@ -2,10 +2,17 @@ package com.oblig;
 
 import com.oblig.scenes.MainScene;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * Main er hovedklassen til programmet, det er her start punktet er
+ *
+ * Gruppenummer: 10
+ * 233518 - Sivert Heisholt
+ * 233511 - Sigve Eliassen
+ * 233565 - Govert Dahl
+ * 233530 - Ørjan Dybevik
+ */
 public class Main extends Application {
 
     public final static int WINDOW_WIDTH = 1280;
